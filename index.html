@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Jokenpô</title>
+
+    <style>
+
+body { 
+    background-color: rgb(246, 255, 0);
+    text-align: center;
+    max-width: 1300px;
+    margin: auto;
+    font-family: 'Girassol', cursive;
+}
+
+ul {     
+    list-style-type: none;
+    
+}
+
+li { 
+    display: inline; 
+    margin: 10px;
+}
+
+img { 
+    size: 100%;
+    margin: 5px;
+    height:200px;
+    border:5px solid rgb(46, 238, 7);
+}
+
+img.pedra, img.papel,  img.tesoura, input { 
+    cursor: pointer;
+}
+
+h1 { 
+    font-size: 70px;
+    color: red;
+    
+}
+h2 { 
+    font-size: 25px;
+    color: rgb(19, 82, 184);
+    
+}
+
+h4 {
+    font-size: 25px;
+    color: rgb(19, 82, 184);
+
+}
+
+#vencedor{
+    font-size: 20px;
+    color: rgb(19, 82, 184);
+
+}
+
+div#imagens { 
+    display: inline; 
+}
+
+img#j1Foto, img#j2Foto { 
+    margin: 5px;
+    height:200px;
+    border:5px solid rgb(15, 234, 19);
+    
+}
+
+#button {
+    padding: 25px;
+    font-size: 15px;
+    background:rgb(18, 171, 223);;
+    cursor: pointer;
+    border-radius: 10em;
+}
+
+  
+#button:hover {
+    background: rgb(11, 232, 26);
+   
+}
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Jokenpô</h1>
+    <h2>Escolha uma  das opções e clique no botão</h2>
+    <ul> 
+        <li><img src="pedra.jpg" alt="Pedra" class="pedra" onclick="pedraTurnRdy()"></li>
+        <li><img src="papel.jpg" alt="Papel"  class="papel" onclick="papelTurnRdy()"></li>
+        <li><img src="tesoura.jpg" alt="Tesoura" class="tesoura" onclick="tesouraTurnRdy()" ></li>
+    </ul>
+
+    <br>
+
+    <button id = "button" onclick="jogada()" > FAÇA A SUA JOGADA!!!</button>
+    
+    <br>
+    <br>
+
+    <hr>
+
+    <div id="historico">
+
+    </div>
+    
+    <div id="imagens">
+        <img src="" id="j1Foto"> 
+        <img src="" id="j2Foto">
+    </div>
+
+    <div id="vencedor">
+
+    </div>
+
+    <script>
+
+    let partida = 0;
+    let tesoura = false;
+    let pedra = false;
+    let papel = false;
+
+function pedraTurnRdy() { 
+    document.getElementsByClassName("pedra")[0].src="pedrardy.jpg";
+    //muda imagem para imagem selecionada
+
+    document.getElementsByClassName("tesoura")[0].src="tesoura.jpg";
+    document.getElementsByClassName("papel")[0].src="papel.jpg";
+
+    tesoura = false;
+    pedra = true;
+    papel = false;
+}
+
+function tesouraTurnRdy() { 
+    document.getElementsByClassName("tesoura")[0].src="tesourardy.jpg";
+
+    document.getElementsByClassName("pedra")[0].src="pedra.jpg";
+    document.getElementsByClassName("papel")[0].src="papel.jpg";
+
+    tesoura = true;
+    pedra = false;
+    papel = false;
+}
+
+function papelTurnRdy() { 
+    document.getElementsByClassName("papel")[0].src="papelrdy.jpg";
+
+    document.getElementsByClassName("pedra")[0].src="pedra.jpg";
+    document.getElementsByClassName("tesoura")[0].src="tesoura.jpg";
+
+    tesoura = false;
+    pedra = false;
+    papel = true;
+}
+
+function jogada() { 
+    //0 = pedra
+    //1 = tesoura
+    //2 = papel
+    if(tesoura == false && pedra == false && papel == false) { 
+        alert('Escolha uma das opções!')
+    } else { 
+
+    partida++;
+    if (partida == 1) { //vai verificar se é a partida 1 e se for, vai escrever histórico
+        let title = document.createElement("h1");
+        title.appendChild(document.createTextNode('Resultado'))
+    
+        let historicoDiv = document.getElementById('historico');
+        historicoDiv.appendChild(title)
+
+        let subtitle = document.createElement('h4')
+            //let subtitleString = document.createTextNode('JOGADOR 1 X JOGADOR 2')
+        subtitle.appendChild(document.createTextNode('Jogador 1 X Jogador 2'))
+        historicoDiv.appendChild(subtitle)  
+        }
+
+        let resj2 = Math.floor(Math.random() * 3 );
+        switch (resj2) { 
+            case 0: 
+                resj2 = 'pedra'
+                document.getElementById("j2Foto").src = "pedra.jpg";
+                break;
+            case 1: 
+                resj2 = 'tesoura'
+                document.getElementById("j2Foto").src = "tesoura.jpg";
+                break;            
+            case 2: 
+                resj2 = 'papel'
+                document.getElementById("j2Foto").src = "papel.jpg";
+                break;
+        }
+
+    if ((pedra == true && resj2 == 'tesoura' ) || (tesoura == true && resj2 == 'papel') || (papel == true && resj2 == 'pedra'))  { //condições que o jogador 1 vence
+    //pedra > tesoura, tesoura > papel, papel > pedra
+            
+        document.getElementById("vencedor").innerHTML = "JOGADOR 1 VENCEU!";
+
+    } else if( (resj2 == 'pedra' && tesoura == true) || (resj2 == 'tesoura' && papel == true) || (resj2 == 'papel' && pedra == true)) { //condições que o jogador 2 vence
+            
+        document.getElementById("vencedor").innerHTML = "JOGADOR 2 VENCEU!";
+    } else { //empate
+            
+        document.getElementById("vencedor").innerHTML = "EMPATE!";
+    }
+
+    if(tesoura == true) { 
+        document.getElementById("j1Foto").src = "tesoura.jpg";
+    } else if(papel == true) { 
+        document.getElementById("j1Foto").src = "papel.jpg";
+    } else { 
+        document.getElementById("j1Foto").src = "pedra.jpg";
+    }
+} 
+}
+
+    </script>
+<br>
+<br>
+
+</body>
+</html>
